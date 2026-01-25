@@ -26,13 +26,13 @@ namespace ZenvaGameEngine.Source
                 return AllInputActions[actionName].Pressing;
             }
             
-            Console.WriteLine($"Action {actionName} was not found!");
+            Log.Error($"Action {actionName} was not found!");
             return false;
         }
 
         public static bool ActionJustPressed(string actionName)
         {
-            if (!AllInputActions.ContainsKey(actionName))
+            if (AllInputActions.ContainsKey(actionName))
             {
                 if (!AllInputActions[actionName].Pressed && AllInputActions[actionName].Pressing)
                 {
@@ -41,7 +41,7 @@ namespace ZenvaGameEngine.Source
                 }
             }
             else
-                Console.WriteLine($"Action {actionName} was not found!");
+                Log.Error($"Action {actionName} was not found!");
 
             return false;
         }

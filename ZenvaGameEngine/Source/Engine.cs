@@ -87,7 +87,7 @@ namespace ZenvaGameEngine.Source
         {
             RectangleShape shape = new RectangleShape(new SFML.System.Vector2f(50, 50));
             shape.FillColor = SFML.Graphics.Color.White;
-            shape.Position = new SFML.System.Vector2f(400, 400);
+            shape.Position = new Vector2(400, 400);
             app.Draw(shape);
 
 
