@@ -33,9 +33,9 @@ namespace ZenvaGameEngine
         }
 
         public override void OnLoad()
-        { 
-            Shape2D shape = new Shape2D(Shape2D.SHAPES.RECTANGLE , new Vector2(), new Vector2(50, 50), "IamDeShape!", Color.Transparent, Color.White);
-            AddChild(shape);
+        {
+            Sprite2D sprite = new Sprite2D("Assets/idle.png", new Vector2(), new Vector2(16, 16), new Vector2(4, 4), "Player's Sprite");
+            AddChild(sprite);
         }
 
         public override void OnUpdate()
