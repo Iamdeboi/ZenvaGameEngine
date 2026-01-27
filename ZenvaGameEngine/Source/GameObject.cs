@@ -22,6 +22,7 @@ namespace ZenvaGameEngine.Source
             Origin = Position;
             Scale = new Vector2();
             Tag = "EmptyGameObject";
+            Engine.RegisterGameObject(this);
 
         }
 
@@ -66,7 +67,7 @@ namespace ZenvaGameEngine.Source
         {
             foreach(GameObject child in Children)
             {
-                child.Position = Position + child
+                child.Position = Position + child.Origin;
             }
         }
 

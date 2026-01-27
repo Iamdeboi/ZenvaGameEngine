@@ -25,6 +25,12 @@ namespace ZenvaGameEngine.Source
         //Window Renderer
         public static RenderWindow app;
 
+        //Gameobjects
+        public static List<GameObject> GameObjects = new List<GameObject>();
+        public static List<GameObject> GameObjectsToAdd = new List<GameObject>();
+        public static List<GameObject> GameObjectsToRemove = new List<GameObject>();
+
+
         public Engine(uint WIDTH, uint HEIGHT, string TITLE, SFML.Graphics.Color WINDOWCOLOR)
         {
             this.width = WIDTH; 
@@ -66,29 +72,82 @@ namespace ZenvaGameEngine.Source
             Input.GetKeyDown(e);
         }
 
+        public static void RegisterGameObject(GameObject gameObject)
+        {
+            GameObjectsToAdd.Add(gameObject);
+        }
+
+        public static void UnRegisterGameObject(GameObject gameObject)
+        {
+            GameObjectsToRemove.Add(gameObject);
+        }
+
+
         void GameLoop()
         {
+            LoadObjects();
+
             OnLoad();
             while (app.IsOpen)
             {
                 app.DispatchEvents();
                 app.Clear(windowColor);
 
-
+                UpdateObjects();
                 OnUpdate();
 
                 app.Display();
             }
         }
 
+        public void LoadObjects()
+        {
+            foreach(var gameObject in GameObjects)
+            {
+                gameObject.OnLoad();
+            }
+        }
+        //Add and Remove Objects via this function
+        public void UpdateObjects()
+        {
+            if(GameObjects == null)
+            {
+                return;
+            }
+
+            for(int i = 0; i < GameObjects.Count; i++)
+            {
+                GameObjects[i].OnUpdate();
+                GameObjects[i].UpdateChildren();
+            }
+
+            if(GameObjectsToAdd.Count > 0)
+            { //For instead of "foreach" to prevent crashing when adding new items in the list while this function is still running
+                for(int i = 0;i < GameObjectsToAdd.Count; i++)
+                {
+                    GameObjectsToAdd[i].OnLoad();
+                    GameObjects.Add(GameObjectsToAdd[i]);
+                }
+                GameObjectsToAdd.Clear();
+            }
+
+            if(GameObjectsToRemove.Count > 0)
+            {
+                for (int i = 0; GameObjectsToRemove.Count > i; i++)
+                {
+                    GameObjectsToRemove[i].OnFree();
+                    GameObjects.Remove(GameObjectsToRemove[i]);
+                }
+                GameObjectsToRemove.Clear();
+            }
+
+        }
+
         public abstract void OnLoad();
 
         public virtual void OnUpdate()
         {
-            RectangleShape shape = new RectangleShape(new SFML.System.Vector2f(50, 50));
-            shape.FillColor = SFML.Graphics.Color.White;
-            shape.Position = new Vector2(400, 400);
-            app.Draw(shape);
+            
 
 
             if (Input.ActionJustPressed("Down"))

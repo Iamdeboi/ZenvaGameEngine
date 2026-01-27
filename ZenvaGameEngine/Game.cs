@@ -12,9 +12,20 @@ namespace ZenvaGameEngine
     {
         public Game() : base((uint)800, (uint)800, "Engine Test", Color.Black) { }
 
+        Player player;
+
         public override void OnLoad()
         {
-            
+            player = new Player(new Vector2(400, 400), new Vector2(), "player");
+        }
+
+
+        public override void OnUpdate()
+        {
+            Log.Info($"Player's Position: {player.Position.x} | {player.Position.y}");
+
+
+            base.OnUpdate();
         }
     }
 }
