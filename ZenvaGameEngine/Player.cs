@@ -34,8 +34,9 @@ namespace ZenvaGameEngine
 
         public override void OnLoad()
         {
-            Sprite2D sprite = new Sprite2D("Assets/idle.png", new Vector2(), new Vector2(16, 16), new Vector2(4, 4), "Player's Sprite");
-            AddChild(sprite);
+            AnimatedSprite2D animator = new AnimatedSprite2D(4, new Vector2(4, 4), "Player graphics");
+            Animation2D run = new Animation2D("Assets/Run.png", new Vector2(16, 16), 4);
+            animator.AddAnimation("Run", run);
         }
 
         public override void OnUpdate()

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using SFML.Graphics;
 
 namespace ZenvaGameEngine.Source
 {
@@ -25,7 +27,7 @@ namespace ZenvaGameEngine.Source
         private Dictionary<string, Animation2D> AllAnimations = new Dictionary<string, Animation2D>();
         
         private int CurrentFrame = 0;
-        private int elapsedTime = 0;
+        private float elapsedTime = 0;
 
         public AnimatedSprite2D(float frameTime, Vector2 scale, string tag)
         {
@@ -81,6 +83,21 @@ namespace ZenvaGameEngine.Source
         {
             if(currentAnimation != null) { return; }
 
+            elapsedTime += (int)Time.deltaTime;
+
+            if (elapsedTime >= FrameTime && currentAnimation.TotalFrames != 1)
+            {
+                CurrentFrame = (CurrentFrame == currentAnimation.TotalFrames - 1) ? 0 : CurrentFrame++;
+                elapsedTime = 0f;
+            }
+
+            currentAnimation.frameRectangle = new IntRect((int)(CurrentFrame * currentAnimation.FrameSize.x), 0, (int)currentAnimation.FrameSize.x, (int)currentAnimation.FrameSize.y);
+
+            currentAnimation.sprite.Position = Position;
+            currentAnimation.sprite.Scale = Scale;
+            currentAnimation.sprite.TextureRect = currentAnimation.frameRectangle;
+
+            Engine.app.Draw(currentAnimation.sprite);
         }
     }
 }

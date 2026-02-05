@@ -110,6 +110,8 @@ namespace ZenvaGameEngine.Source
         //Add and Remove Objects via this function
         public void UpdateObjects()
         {
+            Time.UpdateTime();
+
             if(GameObjects == null)
             {
                 return;

@@ -17,7 +17,7 @@ namespace ZenvaGameEngine.Source
         private Texture Texture { get; set; }
         private Vector2 FrameSize { get; set; }
         public Sprite sprite { get; set; }
-
+        public IntRect TextureRect { get; internal set; }
 
         public Sprite2D(string texturePath, Vector2 position, Vector2 frameSize, Vector2 scale, string tag)
         {
@@ -56,9 +56,6 @@ namespace ZenvaGameEngine.Source
             Engine.app.Draw(sprite);
         }
 
-        public static implicit operator Sprite2D(Sprite v)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }
