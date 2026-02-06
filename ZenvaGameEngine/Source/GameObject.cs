@@ -34,6 +34,7 @@ namespace ZenvaGameEngine.Source
         public virtual void FreeChild(GameObject child)
         {
             if(Children.Contains(child)) Children.Remove(child);
+            child.FreeSelf();
             
         }
 
@@ -52,9 +53,9 @@ namespace ZenvaGameEngine.Source
 
         public virtual void FreeSelf()
         {
+            Engine.UnRegisterGameObject(this);
 
-
-            if(Children == null) {  return; }
+            if(Children == null) { return; }
             foreach (GameObject child in Children)
             {
                 child.FreeSelf();

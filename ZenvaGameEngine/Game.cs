@@ -12,20 +12,29 @@ namespace ZenvaGameEngine
     {
         public Game() : base((uint)800, (uint)800, "Engine Test", Color.Black) { }
 
-        Player player;
+
 
         public override void OnLoad()
         {
-            player = new Player(new Vector2(400, 400), new Vector2(), "player");
-        }
+            Demo_Scene level1 = new Demo_Scene("level1");
+            Demo_Scene_2 level2 = new Demo_Scene_2("level2");
+            LevelManager.ChangeLevel("level1");
 
+        }
 
         public override void OnUpdate()
         {
-            Log.Info($"Player's Position: {player.Position.x} | {player.Position.y}");
-
+            if (Input.ActionJustPressed("Up"))
+            {
+                LevelManager.ChangeLevel("level2");
+            }
+            if (Input.ActionJustPressed("Down"))
+            {
+                LevelManager.ChangeLevel("level1");
+            }
 
             base.OnUpdate();
         }
     }
 }
+

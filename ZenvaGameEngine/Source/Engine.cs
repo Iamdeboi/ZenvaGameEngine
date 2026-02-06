@@ -155,7 +155,8 @@ namespace ZenvaGameEngine.Source
 
         public virtual void OnUpdate()
         {
-            
+            LevelManager.UpdateLevel();
+
         }
     }
 }
