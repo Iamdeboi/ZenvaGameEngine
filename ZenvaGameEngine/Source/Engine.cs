@@ -25,6 +25,10 @@ namespace ZenvaGameEngine.Source
         //Window Renderer
         public static RenderWindow app;
 
+        //Camera
+        public static View camera;
+        public static List<Camera> AllCameras = new List<Camera>();
+
         //Gameobjects
         public static List<GameObject> GameObjects = new List<GameObject>();
         public static List<GameObject> GameObjectsToAdd = new List<GameObject>();
@@ -44,6 +48,8 @@ namespace ZenvaGameEngine.Source
             app.Closed += App_Closed;
             app.Resized += App_Resized;
             app.SetFramerateLimit(144);
+            camera = app.GetView();
+            app.SetView(camera);
 
             GameLoop();
         }
@@ -86,7 +92,6 @@ namespace ZenvaGameEngine.Source
         void GameLoop()
         {
             LoadObjects();
-
             OnLoad();
             while (app.IsOpen)
             {
@@ -111,6 +116,7 @@ namespace ZenvaGameEngine.Source
         public void UpdateObjects()
         {
             Time.UpdateTime();
+            
 
             if(GameObjects == null)
             {
@@ -125,7 +131,7 @@ namespace ZenvaGameEngine.Source
 
             if(GameObjectsToAdd.Count > 0)
             { //For instead of "foreach" to prevent crashing when adding new items in the list while this function is still running
-                for(int i = 0;i < GameObjectsToAdd.Count; i++)
+                for(int i = 0; i < GameObjectsToAdd.Count; i++)
                 {
                     GameObjectsToAdd[i].OnLoad();
                     GameObjects.Add(GameObjectsToAdd[i]);
@@ -150,17 +156,6 @@ namespace ZenvaGameEngine.Source
         public virtual void OnUpdate()
         {
             
-
-
-            if (Input.ActionJustPressed("Down"))
-            {
-                Console.WriteLine("Key just pressed");
-            }
-
-            if (Input.ActionPressed("Up"))
-            {
-                Console.WriteLine("Key pressed");
-            }
         }
     }
 }

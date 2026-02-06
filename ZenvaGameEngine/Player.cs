@@ -17,6 +17,10 @@ namespace ZenvaGameEngine
         public override string Tag { get; set; }
         public override List<GameObject> Children { get; set; }
 
+        AnimatedSprite2D animator;
+        Camera cam; 
+
+
         //Constructor
         public Player(Vector2 position, Vector2 scale, string tag)
         {
@@ -34,9 +38,14 @@ namespace ZenvaGameEngine
 
         public override void OnLoad()
         {
-            AnimatedSprite2D animator = new AnimatedSprite2D(4, new Vector2(4, 4), "Player graphics");
+            animator = new AnimatedSprite2D(1f, new Vector2(4, 4), "Player graphics");
             Animation2D run = new Animation2D("Assets/Run.png", new Vector2(16, 16), 4);
+            Animation2D idle = new Animation2D("Assets/idle.png", new Vector2(16, 16), 1);
+            animator.AddAnimation("Idle", idle);
             animator.AddAnimation("Run", run);
+            AddChild(animator);
+            cam = new Camera(true, "Player's Cam");
+            AddChild(cam);
         }
 
         public override void OnUpdate()
@@ -44,11 +53,20 @@ namespace ZenvaGameEngine
             if (Input.ActionPressed("Right"))
             {
                 Position.x += 1;
+                animator.FlipH = 1;
+                animator.Play("Run");
             }
-            if (Input.ActionPressed("Left"))
+            else if (Input.ActionPressed("Left"))
             {
                 Position.x -= 1;
+                animator.FlipH = -1;
+                animator.Play("Run");
             }
+            else
+            {
+                animator.Play("Idle");
+            }
+
         }
     }
 }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ZenvaGameEngine.Source
 {
-    static class Input
+    static internal class Input
     {
         //Inputs
         public static Dictionary<string, InputAction> AllInputActions = new Dictionary<string, InputAction>();
 
-        // Add input actions here
+        //Add input actions here
         public static InputAction a1 = new InputAction("Left", Keyboard.Key.A, Keyboard.Key.Left);
         public static InputAction a2 = new InputAction("Right", Keyboard.Key.D, Keyboard.Key.Right);
         public static InputAction a3 = new InputAction("Up", Keyboard.Key.W, Keyboard.Key.Up);
@@ -25,7 +25,7 @@ namespace ZenvaGameEngine.Source
             {
                 return AllInputActions[actionName].Pressing;
             }
-            
+
             Log.Error($"Action {actionName} was not found!");
             return false;
         }
@@ -38,10 +38,12 @@ namespace ZenvaGameEngine.Source
                 {
                     AllInputActions[actionName].Pressed = true;
                     return AllInputActions[actionName].Pressed;
+
                 }
             }
             else
                 Log.Error($"Action {actionName} was not found!");
+
 
             return false;
         }
@@ -49,7 +51,7 @@ namespace ZenvaGameEngine.Source
 
         public static void GetKeyUp(KeyEventArgs e)
         {
-            foreach(InputAction action in AllInputActions.Values)
+            foreach (InputAction action in AllInputActions.Values)
             {
                 if (action.Key == e.Code || (action.SecKey != Keyboard.Key.Unknown && action.SecKey == e.Code))
                 {
@@ -57,6 +59,7 @@ namespace ZenvaGameEngine.Source
                     action.Pressed = false;
                 }
             }
+
         }
 
         public static void GetKeyDown(KeyEventArgs e)
@@ -68,9 +71,8 @@ namespace ZenvaGameEngine.Source
                     action.Pressing = true;
                 }
             }
+
         }
-
-
 
     }
 }
