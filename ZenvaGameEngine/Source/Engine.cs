@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using nkast.Aether.Physics2D.Dynamics;
+using SFML.Graphics;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ namespace ZenvaGameEngine.Source
         public static List<GameObject> GameObjects = new List<GameObject>();
         public static List<GameObject> GameObjectsToAdd = new List<GameObject>();
         public static List<GameObject> GameObjectsToRemove = new List<GameObject>();
+
+        public static World world = new World();
 
 
         public Engine(uint WIDTH, uint HEIGHT, string TITLE, SFML.Graphics.Color WINDOWCOLOR)
@@ -116,7 +119,7 @@ namespace ZenvaGameEngine.Source
         public void UpdateObjects()
         {
             Time.UpdateTime();
-            
+            world.Step(Time.deltaTime);
 
             if(GameObjects == null)
             {
@@ -128,6 +131,9 @@ namespace ZenvaGameEngine.Source
                 GameObjects[i].OnUpdate();
                 GameObjects[i].UpdateChildren();
             }
+
+            if(world.IsLocked) { return; }
+
 
             if(GameObjectsToAdd.Count > 0)
             { //For instead of "foreach" to prevent crashing when adding new items in the list while this function is still running

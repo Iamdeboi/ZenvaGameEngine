@@ -62,5 +62,12 @@ namespace ZenvaGameEngine.Source
         {
             return new SFML.System.Vector2f(v.x, v.y);
         }
+
+        public static implicit operator nkast.Aether.Physics2D.Common.Vector2(Vector2 v)
+        {
+            return new nkast.Aether.Physics2D.Common.Vector2(v.x, v.y);
+        }
+
+
     }
 }
