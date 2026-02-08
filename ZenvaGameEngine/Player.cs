@@ -17,6 +17,7 @@ namespace ZenvaGameEngine
         public override string Tag { get; set; }
         public override List<GameObject> Children { get; set; }
 
+        SoundEffectPlayer SoundEffectPlayer;
         AnimatedSprite2D animator;
         Camera cam;
         int speed = 200;
@@ -48,6 +49,10 @@ namespace ZenvaGameEngine
             cam = new Camera(true, "Player's Cam");
             AddChild(cam);
 
+            SoundEffect sfx = new SoundEffect("Assets/sfx.ogg", "test sfx");
+            SoundEffectPlayer = new SoundEffectPlayer(20);
+            SoundEffectPlayer.AddSFX(sfx);
+
             base.OnLoad();
         }
 
@@ -69,6 +74,11 @@ namespace ZenvaGameEngine
             {
                 velocity.x = 0;
                 animator.Play("Idle");
+            }
+
+            if (Input.ActionJustPressed("Up"))
+            {
+                SoundEffectPlayer.Play("test sfx");
             }
 
             Move();
