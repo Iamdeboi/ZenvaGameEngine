@@ -9,7 +9,7 @@ using ZenvaGameEngine.Source;
 
 namespace ZenvaGameEngine
 {
-    internal class Player : GameObject
+    internal class Player : KinematicBody
     {
         public override Vector2 Position { get; set; }
         public override Vector2 Origin { get; set; }
@@ -18,17 +18,18 @@ namespace ZenvaGameEngine
         public override List<GameObject> Children { get; set; }
 
         AnimatedSprite2D animator;
-        Camera cam; 
+        Camera cam;
+        int speed = 200;
 
 
         //Constructor
-        public Player(Vector2 position, Vector2 scale, string tag)
+        public Player(Vector2 position, Vector2 scale, string tag) : base(position, scale, tag)
         {
             this.Position = position;
-            this.Origin = position;
             this.Scale = scale;
             this.Tag = tag;
         }
+
 
         //Inherited Functions from GameObject
         public override void OnFree()
@@ -46,27 +47,34 @@ namespace ZenvaGameEngine
             AddChild(animator);
             cam = new Camera(true, "Player's Cam");
             AddChild(cam);
+
+            base.OnLoad();
         }
 
         public override void OnUpdate()
         {
             if (Input.ActionPressed("Right"))
             {
-                Position.x += 1;
+                velocity.x = speed;
                 animator.FlipH = 1;
                 animator.Play("Run");
             }
             else if (Input.ActionPressed("Left"))
             {
-                Position.x -= 1;
+                velocity.x = -speed;
                 animator.FlipH = -1;
                 animator.Play("Run");
             }
             else
             {
+                velocity.x = 0;
                 animator.Play("Idle");
             }
 
+            Move();
+
+
+            base.OnUpdate();
         }
     }
 }

@@ -22,9 +22,18 @@ namespace ZenvaGameEngine
 
         public override void OnLoad()
         {
-            player = new Player(new Vector2(400, 400), new Vector2(), "player");
+            player = new Player(new Vector2(400, 400), new Vector2(50, 50), "player");
+            player.CollisionDebug(true);
             Shape2D box = new Shape2D(Shape2D.SHAPES.RECTANGLE, new Vector2(500, 500), new Vector2(50, 50), "box", Color.Transparent, Color.Red);
+            Wall wall = new Wall(new Vector2(300, 400), new Vector2(50, 50), "wall");
+            player.onCollisionEventHandlers.Add(Body_OnCollision);
+        }
 
+
+        private bool Body_OnCollision(nkast.Aether.Physics2D.Dynamics.Fixture sender, nkast.Aether.Physics2D.Dynamics.Fixture other, nkast.Aether.Physics2D.Dynamics.Contacts.Contact contact)
+        {
+            Log.Info(LevelName + " Collides!");
+            return true; 
         }
 
         public override void OnUpdate()

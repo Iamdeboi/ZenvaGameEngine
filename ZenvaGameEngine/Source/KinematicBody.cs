@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ZenvaGameEngine.Source
 {
-    internal class StaticBody : GameObject
+    internal class KinematicBody : GameObject
     {
         public override Vector2 Position { get; set; }
         public override Vector2 Origin { get; set; }
@@ -23,8 +23,10 @@ namespace ZenvaGameEngine.Source
         public List<OnCollisionEventHandler> onCollisionEventHandlers = new List<OnCollisionEventHandler>();
         public List<OnSeparationEventHandler> onSeparationEventHandlers = new List<OnSeparationEventHandler>();
 
+        public Vector2 velocity = Vector2.Zero();
 
-        public StaticBody(Vector2 position, Vector2 scale, string tag)
+
+        public KinematicBody(Vector2 position, Vector2 scale, string tag)
         {
             this.Position = position;
             this.Scale = scale;
@@ -42,7 +44,7 @@ namespace ZenvaGameEngine.Source
         {
             body = Engine.world.CreateBody(Position);
             body.CreateRectangle(Scale.x, Scale.y, 1f, new Vector2());
-            body.BodyType = BodyType.Static;
+            body.BodyType = BodyType.Dynamic;
             body.IgnoreGravity = true;
             body.IgnoreCCD = collisionDisabled;
             body.FixtureList[0].Tag = this.Tag;
@@ -60,6 +62,15 @@ namespace ZenvaGameEngine.Source
                 body.OnSeparation += handler;
             }
         }
+
+        public void Move()
+        {
+            if(body != null)
+            {
+                body.LinearVelocity = velocity;
+            }
+        }
+
 
         public override void OnUpdate()
         {
