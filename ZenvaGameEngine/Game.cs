@@ -24,14 +24,6 @@ namespace ZenvaGameEngine
 
         public override void OnUpdate()
         {
-            if (Input.ActionJustPressed("Up"))
-            {
-                LevelManager.ChangeLevel("level2");
-            }
-            if (Input.ActionJustPressed("Down"))
-            {
-                LevelManager.ChangeLevel("level1");
-            }
 
             base.OnUpdate();
         }

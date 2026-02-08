@@ -17,10 +17,11 @@ namespace ZenvaGameEngine
         public override string Tag { get; set; }
         public override List<GameObject> Children { get; set; }
 
-        SoundEffectPlayer SoundEffectPlayer;
         AnimatedSprite2D animator;
         Camera cam;
         int speed = 200;
+
+        bool LookingRight = true;
 
 
         //Constructor
@@ -49,42 +50,48 @@ namespace ZenvaGameEngine
             cam = new Camera(true, "Player's Cam");
             AddChild(cam);
 
-            SoundEffect sfx = new SoundEffect("Assets/sfx.ogg", "test sfx");
-            SoundEffectPlayer = new SoundEffectPlayer(20);
-            SoundEffectPlayer.AddSFX(sfx);
-
             base.OnLoad();
         }
 
         public override void OnUpdate()
         {
-            if (Input.ActionPressed("Right"))
-            {
-                velocity.x = speed;
-                animator.FlipH = 1;
-                animator.Play("Run");
-            }
-            else if (Input.ActionPressed("Left"))
-            {
-                velocity.x = -speed;
-                animator.FlipH = -1;
-                animator.Play("Run");
-            }
-            else
-            {
-                velocity.x = 0;
-                animator.Play("Idle");
-            }
+            velocity.x = Convert.ToInt32(Input.ActionPressed("Right")) - Convert.ToInt32(Input.ActionPressed("Left"));
+            velocity.y = Convert.ToInt32(Input.ActionPressed("Down")) - Convert.ToInt32(Input.ActionPressed("Up"));
 
-            if (Input.ActionJustPressed("Up"))
-            {
-                SoundEffectPlayer.Play("test sfx");
-            }
+            velocity = velocity.Normalize() * new Vector2(speed, speed); // Always move in accordance to speed variable, after normalizing the input vector2
 
             Move();
-
+            HandleAnimations();
 
             base.OnUpdate();
         }
+
+        void HandleAnimations()
+        {
+            if(velocity.x == 0 && velocity.y == 0)
+            {
+                animator.Play("Idle");
+            }
+            else
+            {
+                animator.Play("Run");
+            }
+
+            if (velocity.x > 0 != LookingRight)
+            {
+                flip();
+            }
+            if(velocity.x < 0 && LookingRight)
+            {
+                flip();
+            }
+        }
+
+        void flip()
+        {
+            animator.FlipH = -animator.FlipH;
+            LookingRight = !LookingRight;
+        }
+
     }
 }
